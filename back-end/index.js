@@ -1,8 +1,17 @@
 //import express from 'express';
 
 const express = require('express');
+const { default: mongoose } = require('mongoose');
 
 const app =express()
+
+mongoose.connect('mongodb://127.0.0.1:27017/estates')
+    .then(()=>{
+        console.log('DB is connected');
+    })
+    .catch((err)=>{
+        console.log("Error", err);
+    })
 
 
 app.listen(3000,()=>{
