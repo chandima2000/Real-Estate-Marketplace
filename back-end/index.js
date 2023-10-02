@@ -5,7 +5,7 @@ const { default: mongoose } = require('mongoose');
 
 const app =express()
 
-mongoose.connect('mongodb://127.0.0.1:27017/estates')
+mongoose.connect('mongodb://127.0.0.1:27017/Estate')
     .then(()=>{
         console.log('DB is connected');
     })
