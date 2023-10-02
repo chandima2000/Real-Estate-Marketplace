@@ -1,7 +1,8 @@
 //import express from 'express';
 
 const express = require('express');
-const { default: mongoose } = require('mongoose');
+const  mongoose = require('mongoose');
+const userRouter = require('./routes/user.route.js')
 
 const app =express()
 
@@ -12,6 +13,9 @@ mongoose.connect('mongodb://127.0.0.1:27017/Estate')
     .catch((err)=>{
         console.log("Error", err);
     })
+
+
+app.use('/user/routes',userRouter);
 
 
 app.listen(3000,()=>{

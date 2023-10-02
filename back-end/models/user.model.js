@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import { string } from "prop-types";
+const mongoose = require('mongoose');
+
 
 const userSchema = new mongoose.Schema({
     username : {
@@ -24,4 +24,4 @@ const User = mongoose.model('User',userSchema);
 // word should be singular
 //mongodb automatically change to plural.
 
-export default User;
+module.exports =  User;
