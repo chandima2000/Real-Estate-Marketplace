@@ -3,8 +3,11 @@
 const express = require('express');
 const  mongoose = require('mongoose');
 const userRouter = require('./routes/user.route.js')
+const authRouter = require ('./routes/auth.route.js')
 
 const app =express()
+app.use(express.json());
+
 
 mongoose.connect('mongodb://127.0.0.1:27017/Estate')
     .then(()=>{
@@ -16,6 +19,8 @@ mongoose.connect('mongodb://127.0.0.1:27017/Estate')
 
 
 app.use('/user/routes',userRouter);
+
+app.use('/user/auth',authRouter);
 
 
 app.listen(3000,()=>{
