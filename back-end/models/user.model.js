@@ -14,14 +14,15 @@ const userSchema = new mongoose.Schema({
     },
     password : {
         type : String,
-        required : true,
+        required : true
     },
 },
 {timestamps :true});
 
-const User = mongoose.model('User',userSchema);  
+const User = mongoose.model('User',userSchema);  //model name = User
 // Inside the model , the "User" first letter  should be  capital and
 // word should be singular
 //mongodb automatically change to plural.
 
 module.exports =  User;
+
