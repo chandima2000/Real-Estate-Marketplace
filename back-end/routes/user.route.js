@@ -3,6 +3,10 @@ const { test } = require('../controllers/user.controller.js');  // add .js exten
 
 const router = express.Router();
 
-router.get('/test',test )  //see user.controller.js // content of the 'test' is in there.
+router.get('/test',(req, res) => {
+    res.json({
+      message: 'Hello this is from router'
+    });
+  } )  //see user.controller.js // content of the 'test' is in there.
 
 module.exports =  router; 

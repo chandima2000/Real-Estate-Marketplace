@@ -7,6 +7,8 @@ const authRouter = require ('./routes/auth.route.js')
 const dotenv = require('dotenv');
 
 dotenv.config();
+
+
 const app =express()
 app.use(express.json());
 
