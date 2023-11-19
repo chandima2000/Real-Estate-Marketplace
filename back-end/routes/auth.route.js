@@ -35,7 +35,10 @@ router.post("/signin",async (req,res,next) =>{
             return next(errorHandler(401,'Wrong Credentials'));
           }
           const token = jwt.sign({id:validUser._id},process.env.JWT_SECRET)  //Create the JWT token
-          res.cookie('access_token',token,{httpOnly :true}).status(200).json(validUser)  //After creating the JWT token, we need to save that token as the cookie
+
+          const {password: hashedPW,...restInfo} = validUser._doc; // Destructuring the Valid User Information
+
+          res.cookie('access_token',token,{httpOnly :true}).status(200).json(restInfo)  //After creating the JWT token, we need to save that token as the cookie
     }
     catch(error){
       next(error);
