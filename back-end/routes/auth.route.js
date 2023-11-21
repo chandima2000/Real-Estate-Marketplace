@@ -41,7 +41,7 @@ router.post("/signin",async (req,res,next) =>{
           res.cookie('access_token',token,{httpOnly :true}).status(200).json(restInfo)  //After creating the JWT token, we need to save that token as the cookie
     }
     catch(error){
-      next(error);
+      next(errorHandler(error.message));
     }
   });
 
