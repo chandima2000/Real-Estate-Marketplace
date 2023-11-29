@@ -2,8 +2,12 @@ import React, { useState } from "react";
 import {Link,useNavigate} from 'react-router-dom';
 
 function SignIn() {
-    const navigate = useNavigate();
+    
     const [formData, setFormData] = useState({email:'',password:'' });
+    const [error, setError] = useState(null);
+    const [loading,setLoading] = useState(false);
+    const navigate = useNavigate();
+
     const handleChange =(e) =>{
             setFormData({
                 ...formData,
@@ -45,7 +49,8 @@ function SignIn() {
             <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 <input type="email" placeholder="email" className="border p-3 rounded-lg" id="email"onChange={handleChange}/>
                 <input type="password" placeholder="password" className="border p-3 rounded-lg" id="password"onChange={handleChange}/>
-                <button className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 ">Sign In</button>
+                <button disabled={loading} className="bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 ">
+                    {loading ? 'Loading...' : 'Sign In'} </button>
             </form>
             <div className="flex flex-row gap-2 mt-3">
                 <p>Dont Have an account?</p>
