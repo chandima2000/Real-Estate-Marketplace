@@ -1,23 +1,27 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {Link,useNavigate} from 'react-router-dom';
+import {useDispatch, useSelector} from 'react-redux';
+import {signInStart, signInSuccess, signInFailure} from '../app/user/userSlice'
 
 function SignIn() {
     
-    const [formData, setFormData] = useState({email:'',password:'' });
-    const [error, setError] = useState(null);
-    const [loading,setLoading] = useState(false);
+    const [formData, setFormData] = useState({});  
+    const {loading,error} = useSelector((state)=>state.user)
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const handleChange =(e) =>{
             setFormData({
                 ...formData,
                 [e.target.id]:e.target.value,
             });
-    }
+    };
     const handleSubmit = async (e)=>{
        e.preventDefault(); 
 
   try{
+
+    dispatch(signInStart())
        const res =  await fetch('/user/auth/signin',
        {
         method : 'POST',
@@ -26,18 +30,18 @@ function SignIn() {
         },
         body : JSON.stringify(formData),
        });
-       if(!res.ok){
-            const errorData = await res.json();
-            console.error('Sign-in failed:', errorData.message);
-            alert("User Name or Password Incorrect, Try Again",errorData.message)
+
+        const data = await res.json();
+        console.log(data);
+       if(data.success == false){
+            dispatch(signInFailure(data.message))
+            return;
        }
-       else{
-            const data=await res.json();
-            console.log(data);
+            dispatch(signInSuccess(data));
             navigate('/');
-       }}
-       catch(error){
-            HTMLFormControlsCollection.error("Error ",error.message);
+       }
+        catch(error){
+            dispatch(signInFailure(error.message));
        }
       
     };

@@ -3,17 +3,20 @@ import {Link,useNavigate} from 'react-router-dom';
 
 function SignUp() {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState({ })
+    const [formData, setFormData] = useState({ });
+    const [error,setError] = useState(null);
+    const [loading,setLoading] = useState(false);
     const handleChange =(e) =>{
             setFormData({
                 ...formData,
                 [e.target.id]:e.target.value,
             });
-    }
+    };
     const handleSubmit = async (e)=>{
        e.preventDefault(); 
-       const res =  await fetch('/user/auth/signup',
-       {
+       try{
+        setLoading(true);
+        const res =  await fetch('/user/auth/signup',{
         method : 'POST',
         headers : {
             'Content-Type' : "application/json",
@@ -22,9 +25,20 @@ function SignUp() {
        });
        const data=await res.json();
        console.log(data);
+       if(data.success == false){
+        setLoading(false);
+        setError(data.message);
+        return;
+       }
+       setLoading(true);
+       setError(null);
        navigate('/sign-in');
-    };
-
+    }
+    catch(error){
+        setLoading(false);
+        setError(error.message);
+    }
+  };
     return ( 
         
         <div className="p-3 max-w-lg mx-auto"> 
