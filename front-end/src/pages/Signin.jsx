@@ -22,7 +22,7 @@ function SignIn() {
 
   try{
 
-    dispatch(signInStart())
+       dispatch(signInStart());
        const res =  await fetch('/user/auth/signin',
        {
         method : 'POST',
@@ -63,7 +63,7 @@ function SignIn() {
                 <p>Dont Have an account?</p>
                 <Link to = {"/sign-Up"}><span className="text-blue-700 font-bold">Sign Up</span></Link>
             </div>
-            
+            {error && <p className="text-red-500 mt-5">{error}</p>}
         </div>
 
      );

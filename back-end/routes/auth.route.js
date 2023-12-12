@@ -45,4 +45,46 @@ router.post("/signin",async (req,res,next) =>{
     }
   });
 
+
+router.post("/google", async (req,res,next) =>{
+  
+  try{
+
+      const user = await User.findOne({email : req.body.email});
+      
+      if(user){
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET);
+        const { password : pass, ...rest} = user._doc;   //separate the password and rest of the things are sent 
+        res.cookie('access_token',token,{httpOnly:true}).status(200).json(rest);
+      }
+
+      else{  //create a new user
+
+        //Because in the User model(database) password is required, 
+        // when we use google authentication to signin to the system 
+        // there is no password, that is why we create a default password
+        const generatedPassword = Math.random().toString(36).slice(-8) + Math.random().toString(36).slice(-8);
+        // we did not write password as it is into the database, we should hashed the password.
+        const hashedPassword = bcryptjs.hashSync(generatedPassword,10);
+        const newUser = new User( {
+          username : req.body.name.split(' ').join('').toLowerCase() + Math.random().toString(36).slice(-4),
+          email : req.body.email,
+          password : hashedPassword,
+          avatar : req.body.photo,
+        });
+        await newUser.save();
+        const token = jwt.sign({id : newUser._id}, process.env.JWT_SECRET);
+        const {password : pass, ...rest} = newUser._doc;
+        res
+          .cookie('access_token',token, {httpOnly : true})
+          .status(200)
+          .json(rest)
+      }
+  }
+
+  catch(error){
+    next(error);
+  }
+});
+
 module.exports = router;
